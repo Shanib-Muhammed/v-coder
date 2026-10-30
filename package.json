@@ -1,0 +1,57 @@
+{
+  "name": "vcoder",
+  "version": "2.0.0",
+  "description": "Vcoder — Intelligent terminal AI agent with web dashboard, multi-provider AI, persistent memory, and self-improving skills.",
+  "main": "src/index.js",
+  "bin": {
+    "vcoder": "./bin/vcoder.js"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dashboard": "node src/dashboard/server.js",
+    "dev": "node --watch src/index.js",
+    "link-global": "npm link"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "terminal",
+    "coding",
+    "assistant",
+    "openai",
+    "anthropic",
+    "gemini",
+    "groq",
+    "ollama",
+    "openrouter",
+    "dashboard"
+  ],
+  "author": "Vcoder Team",
+  "license": "MIT",
+  "dependencies": {
+    "@inkjs/ui": "^2.0.0",
+    "ansi-escapes": "^7.0.0",
+    "boxen": "^8.0.1",
+    "chalk": "^5.3.0",
+    "cli-spinners": "^3.2.0",
+    "cli-table3": "^0.6.5",
+    "conf": "^13.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.22.3",
+    "figlet": "^1.12.0",
+    "gradient-string": "^3.0.0",
+    "ink": "^8.0.0",
+    "inquirer": "^12.0.0",
+    "marked": "^14.0.0",
+    "marked-terminal": "^7.2.1",
+    "node-fetch": "^3.3.2",
+    "open": "^10.2.0",
+    "ora": "^8.1.0",
+    "react": "^19.3.1",
+    "string-width": "^7.2.0",
+    "strip-ansi": "^7.1.0",
+    "wrap-ansi": "^9.0.0",
+    "ws": "^8.22.0"
+  }
+}

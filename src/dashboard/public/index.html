@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V-Coder -- AI Terminal Agent Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- LEFT SIDEBAR: Sessions (ChatGPT/Claude style) -->
+  <aside class="sessions-sidebar" id="sessions-sidebar">
+    <div class="sessions-header">
+      <div class="sidebar-brand">
+        <svg class="logo-svg" width="28" height="28" viewBox="0 0 40 40" fill="none">
+          <polygon points="2,4 15,4 20,22 25,4 38,4 27,36 13,36" fill="#DC143C"/>
+          <rect x="14" y="15" width="12" height="4" fill="#0D0D0D"/>
+        </svg>
+        <span class="brand-name">V-Coder</span>
+      </div>
+      <button class="new-chat-btn" id="new-chat-btn" title="New Chat">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        New Chat
+      </button>
+    </div>
+
+    <div class="sessions-search">
+      <input type="text" id="session-search" placeholder="Search sessions..." class="search-input">
+    </div>
+
+    <div class="sessions-label">Today</div>
+    <div class="sessions-list" id="sessions-list">
+      <!-- Sessions filled by JS -->
+    </div>
+
+    <!-- Nav at bottom -->
+    <div class="sessions-nav">
+      <button class="snav-btn active" data-tab="chat" id="nav-chat">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+      </button>
+      <button class="snav-btn" data-tab="providers" id="nav-providers">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        Providers
+      </button>
+      <button class="snav-btn" data-tab="memory" id="nav-memory">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/></svg>
+        Memory
+      </button>
+      <button class="snav-btn" data-tab="settings" id="nav-settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </div>
+    <div class="sidebar-status" id="provider-status">
+      <div class="status-dot"></div>
+      <span id="status-provider">Loading...</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <header class="header">
+      <div class="header-left">
+        <h1 id="page-title">Chat</h1>
+      </div>
+      <div class="header-right">
+        <div class="model-badge" id="model-badge">
+          <span class="model-icon">&#9889;</span>
+          <span id="current-model">Loading...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- CHAT TAB -->
+    <section class="tab-content active" id="tab-chat">
+      <div class="chat-container" id="chat-messages">
+        <div class="welcome-message" id="welcome-screen">
+          <div class="welcome-logo">
+            <svg class="welcome-svg" viewBox="0 0 520 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="10,8 32,8 52,80 72,8 94,8 60,100 44,100" fill="#DC143C"/>
+              <rect x="100" y="52" width="22" height="7" fill="#7A0A1A" rx="3"/>
+              <path d="M132 8 L168 8 L168 24 L150 24 Q149 24 149 54 Q149 84 150 84 L168 84 L168 100 L132 100 Q120 100 120 54 Q120 8 132 8 Z" fill="#DC143C"/>
+              <path d="M178 8 L212 8 Q226 8 226 54 Q226 100 212 100 L178 100 Q164 100 164 54 Q164 8 178 8 Z M178 24 Q175 24 175 54 Q175 84 178 84 L212 84 Q215 84 215 54 Q215 24 212 24 Z" fill="#DC143C"/>
+              <rect x="234" y="8" width="16" height="92" fill="#DC143C"/>
+              <path d="M250 8 L275 8 Q294 8 294 54 Q294 100 275 100 L250 100 Z M250 24 L272 24 Q278 24 278 54 Q278 84 272 84 L250 84 Z" fill="#DC143C"/>
+              <rect x="304" y="8" width="16" height="92" fill="#DC143C"/>
+              <rect x="304" y="8" width="50" height="16" fill="#DC143C"/>
+              <rect x="304" y="46" width="42" height="16" fill="#DC143C"/>
+              <rect x="304" y="84" width="50" height="16" fill="#DC143C"/>
+              <rect x="364" y="8" width="16" height="92" fill="#DC143C"/>
+              <path d="M380 8 L406 8 Q420 8 420 38 Q420 58 408 63 L422 100 L404 100 L391 64 L380 64 L380 100 L364 100 L364 8 Z M380 24 L380 50 L402 50 Q404 50 404 38 Q404 24 402 24 Z" fill="#DC143C"/>
+            </svg>
+          </div>
+          <p class="welcome-text">Intelligent Terminal AI Agent</p>
+          <p class="welcome-sub">Type a message below to start chatting with your AI.</p>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <div class="input-wrapper">
+          <textarea id="chat-input" placeholder="Message V-Coder..." rows="1"></textarea>
+          <button class="send-btn" id="send-btn" title="Send">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROVIDERS TAB -->
+    <section class="tab-content" id="tab-providers">
+      <div class="providers-grid" id="providers-grid"></div>
+    </section>
+
+    <!-- MEMORY TAB -->
+    <section class="tab-content" id="tab-memory">
+      <div class="memory-grid">
+        <div class="memory-card"><h3>Active Topics</h3><div id="memory-topics" class="memory-content">No topics yet</div></div>
+        <div class="memory-card"><h3>User Style</h3><div id="memory-style" class="memory-content">Not enough data yet</div></div>
+        <div class="memory-card"><h3>Long-term Memories</h3><div id="memory-facts" class="memory-content">No memories stored</div></div>
+        <div class="memory-card"><h3>Session Stats</h3><div id="memory-stats" class="memory-content">Loading...</div></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section class="tab-content" id="tab-settings">
+      <div class="settings-grid">
+        <div class="settings-card">
+          <h3>Active Provider</h3>
+          <select id="settings-provider" class="settings-select"></select>
+        </div>
+        <div class="settings-card">
+          <h3>Model</h3>
+          <select id="settings-model" class="settings-select"></select>
+        </div>
+        <div class="settings-card">
+          <h3>About V-Coder</h3>
+          <p>V-Coder v2.0 -- Intelligent Terminal AI Agent</p>
+          <p class="dim">25 AI Providers | 100+ Models | Blood Red Theme</p>
+          <p class="dim">Free: OpenRouter | Groq | Gemini | Cerebras | Ollama</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
