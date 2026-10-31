@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "V-Coder",
+    "slug": "vcoder-mobile",
+    "scheme": "vcoder",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "in.mecknown.vcoder"
+    },
+    "android": {
+      "package": "in.mecknown.vcoder",
+      "adaptiveIcon": {
+        "backgroundColor": "#090A0F"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
