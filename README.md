@@ -191,3 +191,9 @@ MIT License — Free to use, modify, and distribute.
 ---
 
 *Built with* ❤️ *and* 🩸 *— V-Coder Team*
+
+## Android mobile app
+
+The Android-first mobile application lives in [`apps/mobile`](./apps/mobile). It is built with Expo and React Native. See the [mobile setup guide](./apps/mobile/README.md) and the [Android implementation plan](./docs/ANDROID-IMPLEMENTATION-PLAN.md).
+
+> The mobile UI foundation is an early milestone. Google OAuth, provider credentials, cloud sandboxes, agent execution, and GitHub/Supabase/Vercel operations are planned backend integrations and are not yet live in this frontend scaffold.
